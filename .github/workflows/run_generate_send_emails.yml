@@ -30,3 +30,4 @@ jobs:
           MAX_EMAILS: ${{ secrets.MAX_EMAILS }}
           SAVE_TO_FILE: ${{ secrets.SAVE_TO_FILE }}
           SEND_TO_DISCORD: ${{ secrets.SEND_TO_DISCORD }}
+          SEND_AS_MESSAGE: ${{ secrets.SEND_AS_MESSAGE }}
