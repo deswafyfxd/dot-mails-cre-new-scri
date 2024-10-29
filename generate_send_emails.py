@@ -33,16 +33,20 @@ elif max_emails is not None:
 
 emails = list(generate_dot_emails(username, max_emails))
 
-timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-filename = f"{username}@gmail.com_emails_{timestamp}.txt"
+save_to_file = os.getenv('SAVE_TO_FILE', 'true').lower() == 'true'
+send_to_discord = os.getenv('SEND_TO_DISCORD', 'true').lower() == 'true'
 
-with open(filename, 'w') as f:
-    for email in emails:
-        f.write(email + '\n')
+if save_to_file:
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{username}@gmail.com_emails_{timestamp}.txt"
 
-print(f"Emails saved to {filename}")
+    with open(filename, 'w') as f:
+        for email in emails:
+            f.write(email + '\n')
 
-def send_to_discord(emails, webhook_url):
+    print(f"Emails saved to {filename}")
+
+def send_emails_to_discord(emails, webhook_url):
     with open(emails, 'r') as f:
         content = f.read()
     
@@ -56,8 +60,8 @@ def send_to_discord(emails, webhook_url):
     else:
         print(f"Failed to send emails to Discord. Status code: {response.status_code}")
 
-webhook_url = os.getenv('DISCORD_WEBHOOK_URL')
-if not webhook_url:
-    raise ValueError("DISCORD_WEBHOOK_URL environment variable is not set")
-
-send_to_discord(filename, webhook_url)
+if send_to_discord:
+    webhook_url = os.getenv('DISCORD_WEBHOOK_URL')
+    if not webhook_url:
+        raise ValueError("DISCORD_WEBHOOK_URL environment variable is not set")
+    send_emails_to_discord(filename, webhook_url)
