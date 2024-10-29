@@ -60,8 +60,23 @@ def send_emails_to_discord(emails, webhook_url):
     else:
         print(f"Failed to send emails to Discord. Status code: {response.status_code}")
 
+def send_file_to_discord(filename, webhook_url):
+    with open(filename, 'rb') as f:
+        files = {
+            'file': (filename, f)
+        }
+        response = requests.post(webhook_url, files=files)
+        if response.status_code == 204:
+            print(f"File {filename} sent to Discord successfully!")
+        else:
+            print(f"Failed to send file {filename} to Discord. Status code: {response.status_code}")
+
 if send_to_discord:
     webhook_url = os.getenv('DISCORD_WEBHOOK_URL')
     if not webhook_url:
         raise ValueError("DISCORD_WEBHOOK_URL environment variable is not set")
-    send_emails_to_discord(filename, webhook_url)
+    
+    if save_to_file:
+        send_file_to_discord(filename, webhook_url)
+    else:
+        send_emails_to_discord(filename, webhook_url)
