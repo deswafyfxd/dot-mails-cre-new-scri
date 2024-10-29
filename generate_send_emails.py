@@ -1,6 +1,5 @@
 import itertools
 import datetime
-import requests
 
 def generate_dot_emails(username):
     indices = range(len(username))
@@ -37,5 +36,9 @@ def send_to_discord(emails, webhook_url):
     else:
         print(f"Failed to send emails to Discord. Status code: {response.status_code}")
 
-webhook_url = 'your_discord_webhook_url'
+# Read environment variables for username and webhook_url
+import os
+username = os.getenv('GMAIL_USERNAME')
+webhook_url = os.getenv('DISCORD_WEBHOOK_URL')
+
 send_to_discord(filename, webhook_url)
