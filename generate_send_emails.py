@@ -3,21 +3,33 @@ import datetime
 import os
 import requests
 
-def generate_dot_emails(username):
+def generate_dot_emails(username, max_emails=None):
     indices = range(len(username))
+    count = 0
     for i in range(1, len(indices) + 1):
         for combination in itertools.combinations(indices, i):
+            if max_emails and count >= max_emails:
+                return
             email = list(username)
             for index in combination:
                 email.insert(index, '.')
             yield ''.join(email) + '@gmail.com'
+            count += 1
 
 # Read environment variables for username and webhook_url
 username = os.getenv('GMAIL_USERNAME')
 if not username:
     raise ValueError("GMAIL_USERNAME environment variable is not set")
 
-emails = list(generate_dot_emails(username))
+default_creation = os.getenv('DEFAULT_CREATION', 'false').lower() == 'true'
+max_emails = os.getenv('MAX_EMAILS')
+
+if default_creation:
+    max_emails = None  # Generate all possible variations
+elif max_emails is not None:
+    max_emails = int(max_emails)
+
+emails = list(generate_dot_emails(username, max_emails))
 
 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 filename = f"{username}@gmail.com_emails_{timestamp}.txt"
