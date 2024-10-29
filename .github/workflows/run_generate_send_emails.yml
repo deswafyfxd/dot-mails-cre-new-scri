@@ -26,3 +26,5 @@ jobs:
         env:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DEFAULT_CREATION: ${{ secrets.DEFAULT_CREATION }}
+          MAX_EMAILS: ${{ secrets.MAX_EMAILS }}
