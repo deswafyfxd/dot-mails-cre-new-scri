@@ -4,7 +4,7 @@ import os
 import requests
 
 def generate_dot_emails(username, max_emails=None):
-    indices = range(len(username))
+    indices = range(1, len(username))  # Start from index 1 to avoid leading dots
     count = 0
     for i in range(1, len(indices) + 1):
         for combination in itertools.combinations(indices, i):
@@ -13,8 +13,10 @@ def generate_dot_emails(username, max_emails=None):
             email = list(username)
             for index in combination:
                 email.insert(index, '.')
-            yield ''.join(email) + '@gmail.com'
-            count += 1
+            dotted_email = ''.join(email) + '@gmail.com'
+            if '..' not in dotted_email:  # Ensure no double dots
+                yield dotted_email
+                count += 1
 
 # Read environment variables for username and webhook_url
 username = os.getenv('GMAIL_USERNAME')
