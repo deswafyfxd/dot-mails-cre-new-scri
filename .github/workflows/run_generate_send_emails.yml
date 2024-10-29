@@ -24,5 +24,5 @@ jobs:
       - name: Run generate and send emails script
         run: python generate_send_emails.py
         env:
-          username: ${{ secrets.GMAIL_USERNAME }}
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
