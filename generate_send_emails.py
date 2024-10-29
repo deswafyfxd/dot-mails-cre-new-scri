@@ -63,7 +63,7 @@ def send_emails_to_discord(emails, webhook_url):
 def send_file_to_discord(filename, webhook_url):
     with open(filename, 'rb') as f:
         files = {
-            'file': (filename, f)
+            'file': (filename, f, 'text/plain')
         }
         response = requests.post(webhook_url, files=files)
         if response.status_code == 204:
