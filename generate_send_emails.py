@@ -35,6 +35,9 @@ emails = list(generate_dot_emails(username, max_emails))
 
 save_to_file = os.getenv('SAVE_TO_FILE', 'true').lower() == 'true'
 send_to_discord = os.getenv('SEND_TO_DISCORD', 'true').lower() == 'true'
+send_as_message = os.getenv('SEND_AS_MESSAGE', 'true').lower() == 'true'
+
+filename = None
 
 if save_to_file:
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -46,10 +49,7 @@ if save_to_file:
 
     print(f"Emails saved to {filename}")
 
-def send_emails_to_discord(emails, webhook_url):
-    with open(emails, 'r') as f:
-        content = f.read()
-    
+def send_emails_to_discord(content, webhook_url):
     payload = {
         'content': content
     }
@@ -76,7 +76,8 @@ if send_to_discord:
     if not webhook_url:
         raise ValueError("DISCORD_WEBHOOK_URL environment variable is not set")
     
-    if save_to_file:
+    if save_to_file and filename:
         send_file_to_discord(filename, webhook_url)
-    else:
-        send_emails_to_discord(filename, webhook_url)
+    
+    if send_as_message:
+        send_emails_to_discord('\n'.join(emails), webhook_url)
