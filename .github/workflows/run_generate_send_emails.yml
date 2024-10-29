@@ -28,3 +28,5 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DEFAULT_CREATION: ${{ secrets.DEFAULT_CREATION }}
           MAX_EMAILS: ${{ secrets.MAX_EMAILS }}
+          SAVE_TO_FILE: ${{ secrets.SAVE_TO_FILE }}
+          SEND_TO_DISCORD: ${{ secrets.SEND_TO_DISCORD }}
